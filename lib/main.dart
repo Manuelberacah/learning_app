@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:learning_app/providers/auth_provider.dart';
 import 'package:learning_app/providers/content_provider.dart';
 import 'package:learning_app/screens/login_screen.dart';
-// import 'package:learning_app/screens/home_screen.dart';
 import 'package:learning_app/utils/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
