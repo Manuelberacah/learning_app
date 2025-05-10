@@ -4,6 +4,7 @@ import 'package:learning_app/models/course_content.dart';
 import 'package:learning_app/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/services.dart'; // Added for asset handling
 
 class AudioQuestionWidget extends StatefulWidget {
   final CourseContent content;
@@ -29,6 +30,8 @@ class _AudioQuestionWidgetState extends State<AudioQuestionWidget> with SingleTi
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isPlaying = false;
   bool _hasPlayed = false;
+  bool _isAudioLoaded = false;
+  String _audioLoadError = '';
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -52,34 +55,63 @@ class _AudioQuestionWidgetState extends State<AudioQuestionWidget> with SingleTi
   Future<void> _initAudio() async {
     if (widget.content.audioUrl != null) {
       try {
-        await _audioPlayer.setUrl(widget.content.audioUrl!);
+        // Check if the audio is from assets or a network URL
+        if (widget.content.audioUrl!.startsWith('assets/')) {
+          // Load from assets
+          await _audioPlayer.setAsset(widget.content.audioUrl!);
+        } else {
+          // Load from URL
+          await _audioPlayer.setUrl(widget.content.audioUrl!);
+        }
+        
+        setState(() {
+          _isAudioLoaded = true;
+        });
       } catch (e) {
+        setState(() {
+          _audioLoadError = 'Failed to load audio: $e';
+          _isAudioLoaded = false;
+        });
         debugPrint('Error loading audio: $e');
       }
     }
   }
 
   void _playAudio() async {
+    if (!_isAudioLoaded) {
+      // Try to reload the audio if it failed initially
+      await _initAudio();
+      if (!_isAudioLoaded) return;
+    }
+    
     if (_isPlaying) {
       await _audioPlayer.pause();
       setState(() {
         _isPlaying = false;
       });
     } else {
-      await _audioPlayer.play();
-      setState(() {
-        _isPlaying = true;
-        _hasPlayed = true;
-      });
-      _audioPlayer.playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          if (mounted) {
-            setState(() {
-              _isPlaying = false;
-            });
+      try {
+        await _audioPlayer.seek(Duration.zero); // Reset to beginning
+        await _audioPlayer.play();
+        setState(() {
+          _isPlaying = true;
+          _hasPlayed = true;
+        });
+        _audioPlayer.playerStateStream.listen((state) {
+          if (state.processingState == ProcessingState.completed) {
+            if (mounted) {
+              setState(() {
+                _isPlaying = false;
+              });
+            }
           }
-        }
-      });
+        });
+      } catch (e) {
+        debugPrint('Error playing audio: $e');
+        setState(() {
+          _audioLoadError = 'Error playing audio: $e';
+        });
+      }
     }
   }
 
@@ -146,6 +178,113 @@ class _AudioQuestionWidgetState extends State<AudioQuestionWidget> with SingleTi
     );
   }
 
+  Widget _buildAudioPlayer() {
+    if (!_isAudioLoaded && _audioLoadError.isNotEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.red.shade50,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 36),
+            SizedBox(height: 8),
+            Text(
+              'Audio could not be loaded',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.red,
+              ),
+            ),
+            SizedBox(height: 4),
+            Text(
+              _audioLoadError,
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                color: Colors.red.shade700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            'Listen to the audio',
+            style: GoogleFonts.poppins(
+              fontSize: 16, 
+              fontWeight: FontWeight.w500,
+              color: widget.themeColor,
+            ),
+          ),
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: _playAudio,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                if (_isPlaying)
+                  Lottie.network(
+                    'https://assets9.lottiefiles.com/packages/lf20_jJJl6i.json',
+                    height: 120,
+                    width: 120,
+                    fit: BoxFit.cover,
+                  )
+                else
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: widget.themeColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: widget.themeColor.withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                  ),
+                Icon(
+                  _isPlaying ? Icons.pause : Icons.play_arrow,
+                  size: 40,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            _hasPlayed ? 'Tap to play again' : 'Tap to play',
+            style: GoogleFonts.poppins(
+              color: Colors.grey.shade700, 
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color themeColor = widget.themeColor;
@@ -175,77 +314,7 @@ class _AudioQuestionWidgetState extends State<AudioQuestionWidget> with SingleTi
               const SizedBox(height: 24),
 
               // Audio player
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Listen to the audio',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16, 
-                        fontWeight: FontWeight.w500,
-                        color: themeColor,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: _playAudio,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          if (_isPlaying)
-                            Lottie.network(
-                              'https://assets9.lottiefiles.com/packages/lf20_jJJl6i.json',
-                              height: 120,
-                              width: 120,
-                              fit: BoxFit.cover,
-                            )
-                          else
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: themeColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: themeColor.withOpacity(0.3),
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 6),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          Icon(
-                            _isPlaying ? Icons.pause : Icons.play_arrow,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      _hasPlayed ? 'Tap to play again' : 'Tap to play',
-                      style: GoogleFonts.poppins(
-                        color: Colors.grey.shade700, 
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildAudioPlayer(),
 
               const SizedBox(height: 24),
 
@@ -349,7 +418,7 @@ class _AudioQuestionWidgetState extends State<AudioQuestionWidget> with SingleTi
               CustomButton(
                 text: _isAnswered ? 'Next Question' : 'Submit Answer',
                 onPressed:
-                    (_selectedAnswer == null || !_hasPlayed || _isSubmitting)
+                    (_selectedAnswer == null || (!_hasPlayed && _isAudioLoaded) || _isSubmitting)
                         ? null
                         : _isAnswered
                         ? () => widget.onAnswered(_isCorrect)
