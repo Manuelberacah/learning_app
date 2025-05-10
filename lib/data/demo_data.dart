@@ -65,7 +65,7 @@ class DemoData {
       question: 'What color is this flower?',
       options: ['Red', 'Yellow', 'Blue', 'Purple'],
       correctAnswer: 'Yellow',
-      imageUrl: 'https://images.unsplash.com/photo-1524598171353-ce84a157ed05?q=80&w=300&auto=format&fit=crop',
+      imageUrl: 'https://images.unsplash.com/photo-1589517575452-18a6d4c3f2e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8eWVsbG93JTIwZmxvd2VyfGVufDB8fDB8fHww',
     ),
     CourseContent(
       id: 'kg1_img_4',
@@ -81,7 +81,7 @@ class DemoData {
       question: 'Listen and complete: The dog says "____"',
       options: ['woof', 'meow', 'quack', 'moo'],
       correctAnswer: 'woof',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3',
+      audioUrl: 'assets/audio/dog_bark.mp3',
     ),
     CourseContent(
       id: 'kg1_audio_2',
@@ -89,7 +89,7 @@ class DemoData {
       question: 'Listen and complete: The cat says "____"',
       options: ['meow', 'woof', 'quack', 'moo'],
       correctAnswer: 'meow',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/209/209-preview.mp3',
+      audioUrl: 'assets/audio/cat_meow.mp3',
     ),
     CourseContent(
       id: 'kg1_audio_3',
@@ -97,7 +97,7 @@ class DemoData {
       question: 'Listen and complete: The bird says "____"',
       options: ['tweet', 'woof', 'meow', 'moo'],
       correctAnswer: 'tweet',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2413/2413-preview.mp3',
+      audioUrl: 'assets/audio/bird_tweet.mp3',
     ),
     CourseContent(
       id: 'kg1_audio_4',
@@ -105,7 +105,7 @@ class DemoData {
       question: 'Listen and complete: The cow says "____"',
       options: ['moo', 'woof', 'meow', 'quack'],
       correctAnswer: 'moo',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2407/2407-preview.mp3',
+      audioUrl: 'assets/audio/cow_moo.mp3',
     ),
   ]);
 
@@ -148,7 +148,7 @@ class DemoData {
       question: 'Listen and complete: "____" is a greeting',
       options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
       correctAnswer: 'Hello',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2410/2410-preview.mp3',
+      audioUrl: 'assets/audio/hello.mp3',
     ),
     CourseContent(
       id: 'kg2_audio_2',
@@ -156,7 +156,7 @@ class DemoData {
       question: 'Listen and complete: We say "____" when leaving',
       options: ['Goodbye', 'Hello', 'Thank you', 'Please'],
       correctAnswer: 'Goodbye',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2411/2411-preview.mp3',
+      audioUrl: 'assets/audio/goodbye.mp3',
     ),
     CourseContent(
       id: 'kg2_audio_3',
@@ -164,7 +164,7 @@ class DemoData {
       question: 'Listen and complete: "____" shows gratitude',
       options: ['Thank you', 'Hello', 'Goodbye', 'Please'],
       correctAnswer: 'Thank you',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2412/2412-preview.mp3',
+      audioUrl: 'assets/audio/thank_you.mp3',
     ),
     CourseContent(
       id: 'kg2_audio_4',
@@ -172,7 +172,7 @@ class DemoData {
       question: 'Listen and complete: "____" is used when asking for something',
       options: ['Please', 'Hello', 'Goodbye', 'Thank you'],
       correctAnswer: 'Please',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2413/2413-preview.mp3',
+      audioUrl: 'assets/audio/please.mp3',
     ),
   ]);
 
@@ -215,7 +215,7 @@ class DemoData {
       question: 'Listen and complete: A ____ says meow',
       options: ['cat', 'dog', 'cow', 'sheep'],
       correctAnswer: 'cat',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/209/209-preview.mp3',
+      audioUrl: 'assets/audio/cat_meow.mp3',
     ),
     CourseContent(
       id: 'c1_audio_2',
@@ -223,7 +223,7 @@ class DemoData {
       question: 'Listen and complete: A ____ says woof',
       options: ['dog', 'cat', 'cow', 'sheep'],
       correctAnswer: 'dog',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3',
+      audioUrl: 'assets/audio/dog_bark.mp3',
     ),
     CourseContent(
       id: 'c1_audio_3',
@@ -231,7 +231,7 @@ class DemoData {
       question: 'Listen and complete: A ____ says moo',
       options: ['cow', 'dog', 'cat', 'sheep'],
       correctAnswer: 'cow',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2407/2407-preview.mp3',
+      audioUrl: 'assets/audio/cow_moo.mp3',
     ),
     CourseContent(
       id: 'c1_audio_4',
@@ -239,7 +239,7 @@ class DemoData {
       question: 'Listen and complete: A ____ says baa',
       options: ['sheep', 'dog', 'cat', 'cow'],
       correctAnswer: 'sheep',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2408/2408-preview.mp3',
+      audioUrl: 'assets/audio/sheep_baa.mp3',
     ),
   ]);
 
@@ -282,7 +282,7 @@ class DemoData {
       question: 'Listen and complete: A ____ has wheels and an engine',
       options: ['car', 'boat', 'airplane', 'bicycle'],
       correctAnswer: 'car',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2301/2301-preview.mp3',
+      audioUrl: 'assets/audio/car_engine.mp3',
     ),
     CourseContent(
       id: 'c2_audio_2',
@@ -290,7 +290,7 @@ class DemoData {
       question: 'Listen and complete: A ____ travels on tracks',
       options: ['train', 'car', 'airplane', 'boat'],
       correctAnswer: 'train',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2302/2302-preview.mp3',
+      audioUrl: 'assets/audio/train_whistle.mp3',
     ),
     CourseContent(
       id: 'c2_audio_3',
@@ -298,7 +298,7 @@ class DemoData {
       question: 'Listen and complete: An ____ flies in the sky',
       options: ['airplane', 'car', 'train', 'boat'],
       correctAnswer: 'airplane',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2303/2303-preview.mp3',
+      audioUrl: 'assets/audio/airplane_sound.mp3',
     ),
     CourseContent(
       id: 'c2_audio_4',
@@ -306,7 +306,7 @@ class DemoData {
       question: 'Listen and complete: A ____ sails on water',
       options: ['boat', 'car', 'train', 'airplane'],
       correctAnswer: 'boat',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2304/2304-preview.mp3',
+      audioUrl: 'assets/audio/boat_horn.mp3',
     ),
   ]);
 
@@ -349,7 +349,7 @@ class DemoData {
       question: 'Listen and complete: A ____ has strings that you pluck',
       options: ['guitar', 'piano', 'drums', 'violin'],
       correctAnswer: 'guitar',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/233/233-preview.mp3',
+      audioUrl: 'assets/audio/guitar_strum.mp3',
     ),
     CourseContent(
       id: 'c3_audio_2',
@@ -357,7 +357,7 @@ class DemoData {
       question: 'Listen and complete: A ____ has keys that you press',
       options: ['piano', 'guitar', 'drums', 'violin'],
       correctAnswer: 'piano',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/235/235-preview.mp3',
+      audioUrl: 'assets/audio/piano_notes.mp3',
     ),
     CourseContent(
       id: 'c3_audio_3',
@@ -365,7 +365,7 @@ class DemoData {
       question: 'Listen and complete: ____ are instruments that you hit',
       options: ['drums', 'guitar', 'piano', 'violin'],
       correctAnswer: 'drums',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/237/237-preview.mp3',
+      audioUrl: 'assets/audio/drums_beat.mp3',
     ),
     CourseContent(
       id: 'c3_audio_4',
@@ -373,7 +373,7 @@ class DemoData {
       question: 'Listen and complete: A ____ is played with a bow',
       options: ['violin', 'guitar', 'piano', 'drums'],
       correctAnswer: 'violin',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/239/239-preview.mp3',
+      audioUrl: 'assets/audio/violin_sound.mp3',
     ),
   ]);
 
@@ -416,7 +416,7 @@ class DemoData {
       question: 'Listen and complete: People in France speak ____ ',
       options: ['French', 'English', 'Spanish', 'German'],
       correctAnswer: 'French',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2410/2410-preview.mp3',
+      audioUrl: 'assets/audio/french_words.mp3',
     ),
     CourseContent(
       id: 'c4_audio_2',
@@ -424,7 +424,7 @@ class DemoData {
       question: 'Listen and complete: People in England speak ____ ',
       options: ['English', 'French', 'Spanish', 'German'],
       correctAnswer: 'English',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2411/2411-preview.mp3',
+      audioUrl: 'assets/audio/english_words.mp3',
     ),
     CourseContent(
       id: 'c4_audio_3',
@@ -432,7 +432,7 @@ class DemoData {
       question: 'Listen and complete: People in Spain speak ____ ',
       options: ['Spanish', 'English', 'French', 'German'],
       correctAnswer: 'Spanish',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2412/2412-preview.mp3',
+      audioUrl: 'assets/audio/spanish_words.mp3',
     ),
     CourseContent(
       id: 'c4_audio_4',
@@ -440,7 +440,7 @@ class DemoData {
       question: 'Listen and complete: People in Germany speak ____ ',
       options: ['German', 'English', 'French', 'Spanish'],
       correctAnswer: 'German',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2413/2413-preview.mp3',
+      audioUrl: 'assets/audio/german_words.mp3',
     ),
   ]);
 
@@ -483,7 +483,7 @@ class DemoData {
       question: 'Listen and complete: ____ is the force that pulls objects toward Earth',
       options: ['Gravity', 'Photosynthesis', 'Evolution', 'Magnetism'],
       correctAnswer: 'Gravity',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2416/2416-preview.mp3',
+      audioUrl: 'assets/audio/gravity_explanation.mp3',
     ),
     CourseContent(
       id: 'c5_audio_2',
@@ -491,7 +491,7 @@ class DemoData {
       question: 'Listen and complete: ____ is how plants make food using sunlight',
       options: ['Photosynthesis', 'Gravity', 'Evolution', 'Magnetism'],
       correctAnswer: 'Photosynthesis',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2417/2417-preview.mp3',
+      audioUrl: 'assets/audio/photosynthesis_explanation.mp3',
     ),
     CourseContent(
       id: 'c5_audio_3',
@@ -499,7 +499,7 @@ class DemoData {
       question: 'Listen and complete: ____ is how species change over time',
       options: ['Evolution', 'Gravity', 'Photosynthesis', 'Magnetism'],
       correctAnswer: 'Evolution',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2418/2418-preview.mp3',
+      audioUrl: 'assets/audio/evolution_explanation.mp3',
     ),
     CourseContent(
       id: 'c5_audio_4',
@@ -507,7 +507,7 @@ class DemoData {
       question: 'Listen and complete: ____ is the force that attracts metals',
       options: ['Magnetism', 'Gravity', 'Photosynthesis', 'Evolution'],
       correctAnswer: 'Magnetism',
-      audioUrl: 'https://assets.mixkit.co/active_storage/sfx/2419/2419-preview.mp3',
+      audioUrl: 'assets/audio/magnetism_explanation.mp3',
     ),
   ]);
 }
