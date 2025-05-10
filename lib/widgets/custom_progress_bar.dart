@@ -23,11 +23,11 @@ class CustomProgressBar extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 2,
+            blurRadius: 4,
             offset: const Offset(0, 2),
           ),
         ],
@@ -42,18 +42,18 @@ class CustomProgressBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '$typeName Progress',
-                  style: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: themeColor,
+                  'Question ${currentIndex + 1} of $totalQuestions',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    color: Colors.black87,
                   ),
                 ),
                 Text(
                   '${(progressPercentage * 100).toInt()}%',
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    fontSize: 14,
                     color: themeColor,
                   ),
                 ),
@@ -66,44 +66,31 @@ class CustomProgressBar extends StatelessWidget {
             children: [
               // Background
               Container(
-                height: 10,
+                height: 8,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: themeColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
               // Progress
-              FractionallySizedBox(
-                widthFactor: progressPercentage,
-                child: Container(
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: themeColor,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                        color: themeColor.withOpacity(0.5),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: 8,
+                width: MediaQuery.of(context).size.width * progressPercentage - 32,
+                decoration: BoxDecoration(
+                  color: themeColor,
+                  borderRadius: BorderRadius.circular(4),
+                  boxShadow: [
+                    BoxShadow(
+                      color: themeColor.withOpacity(0.5),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
                 ),
               ),
             ],
-          ),
-          
-          // Question count
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Text(
-              'Question ${currentIndex + 1} of $totalQuestions',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: Colors.grey.shade700,
-              ),
-            ),
           ),
         ],
       ),

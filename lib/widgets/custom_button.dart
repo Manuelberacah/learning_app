@@ -6,13 +6,15 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final Color color;
+  final IconData? icon;
 
   const CustomButton({
     Key? key,
     required this.text,
     required this.onPressed,
     required this.isLoading,
-    this.color = Colors.blue,
+    this.color = const Color(0xFF4355B9),
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -22,27 +24,38 @@ class CustomButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
         ),
         backgroundColor: color,
         foregroundColor: Colors.white,
         disabledBackgroundColor: color.withOpacity(0.5),
+        elevation: 4,
+        shadowColor: color.withOpacity(0.4),
       ),
       child: isLoading
           ? const SizedBox(
-              height: 20,
-              width: 20,
+              height: 24,
+              width: 24,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               ),
             )
-          : Text(
-              text,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (icon != null) ...[
+                  Icon(icon, size: 20),
+                  const SizedBox(width: 8),
+                ],
+                Text(
+                  text,
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
     );
   }

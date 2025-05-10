@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:learning_app/home_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:learning_app/providers/auth_provider.dart';
-import 'package:learning_app/providers/content_provider.dart';
-import 'package:learning_app/screens/login_screen.dart';
-import 'package:learning_app/utils/theme.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:learning_app/screens/splash_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
   runApp(const MyApp());
 }
 
@@ -16,34 +23,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => ContentProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Sheshya Learning',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          textTheme: GoogleFonts.poppinsTextTheme(
-            Theme.of(context).textTheme,
+    return MaterialApp(
+      title: 'Sheshya Learning',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        primaryColor: const Color(0xFF4355B9),
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        appBarTheme: AppBarTheme(
+          backgroundColor: const Color(0xFF4355B9),
+          elevation: 0,
+          centerTitle: true,
+          titleTextStyle: GoogleFonts.montserrat(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          appBarTheme: AppBarTheme(
-            titleTextStyle: GoogleFonts.montserrat(
-              fontSize: 20,
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF4355B9),
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            textStyle: const TextStyle(
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        debugShowCheckedModeBanner: false,
-        home: Consumer<AuthProvider>(
-          builder: (context, authProvider, _) {
-            return authProvider.isAuthenticated
-                ? const HomeScreen()
-                : const HomeScreen();
-          },
-        ),
       ),
+      home: const SplashScreen(),
     );
   }
 }

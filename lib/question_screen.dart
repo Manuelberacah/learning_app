@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_app/models/course_content.dart';
+import 'package:learning_app/widgets/fill_question_widget.dart';
 import 'package:learning_app/widgets/image_match_question_widget.dart';
 import 'package:learning_app/widgets/audio_question_widget.dart';
 import 'package:learning_app/widgets/custom_progress_bar.dart';
@@ -25,34 +26,10 @@ class QuestionScreen extends StatefulWidget {
   State<QuestionScreen> createState() => _QuestionScreenState();
 }
 
-class _QuestionScreenState extends State<QuestionScreen> with SingleTickerProviderStateMixin {
+class _QuestionScreenState extends State<QuestionScreen> {
   int _currentIndex = 0;
   int _score = 0;
   bool _isCompleting = false;
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
-    
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   void _nextQuestion(bool isCorrect) {
     // Prevent multiple calls to onCompleted
@@ -64,25 +41,22 @@ class _QuestionScreenState extends State<QuestionScreen> with SingleTickerProvid
       });
     }
 
-    _controller.reverse().then((_) {
-      if (_currentIndex < widget.contents.length - 1) {
-        setState(() {
-          _currentIndex++;
-        });
-        _controller.forward();
-      } else {
-        // All questions of this type are completed
-        // Set flag to prevent multiple calls
-        setState(() {
-          _isCompleting = true;
-        });
-        
-        // Use Future.microtask to avoid calling during build
-        Future.microtask(() {
-          widget.onCompleted(_score);
-        });
-      }
-    });
+    if (_currentIndex < widget.contents.length - 1) {
+      setState(() {
+        _currentIndex++;
+      });
+    } else {
+      // All questions of this type are completed
+      // Set flag to prevent multiple calls
+      setState(() {
+        _isCompleting = true;
+      });
+      
+      // Use Future.microtask to avoid calling during build
+      Future.microtask(() {
+        widget.onCompleted(_score);
+      });
+    }
   }
 
   @override
@@ -171,27 +145,22 @@ class _QuestionScreenState extends State<QuestionScreen> with SingleTickerProvid
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.typeName,
-          style: GoogleFonts.montserrat(
-            fontWeight: FontWeight.bold,
+          '${widget.typeName} ${_currentIndex + 1}/${widget.contents.length}',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
           ),
         ),
         backgroundColor: widget.themeColor,
+        foregroundColor: Colors.white,
         actions: [
           Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              margin: const EdgeInsets.only(right: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16.0),
               child: Text(
                 'Score: $_score',
                 style: GoogleFonts.poppins(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: widget.themeColor,
                 ),
               ),
             ),
@@ -211,24 +180,25 @@ class _QuestionScreenState extends State<QuestionScreen> with SingleTickerProvid
             
             // Question content
             Expanded(
-              child: FadeTransition(
-                opacity: _animation,
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0.05, 0),
-                    end: Offset.zero,
-                  ).animate(_animation),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: _buildQuestionWidget(
-                        content, 
-                        Key('question_$_currentIndex'),
-                        widget.themeColor,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                        minWidth: constraints.maxWidth,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: _buildQuestionWidget(
+                          content, 
+                          Key('question_$_currentIndex'),
+                          widget.themeColor,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           ],
@@ -239,6 +209,13 @@ class _QuestionScreenState extends State<QuestionScreen> with SingleTickerProvid
 
   Widget _buildQuestionWidget(CourseContent content, Key key, Color themeColor) {
     switch (content.type) {
+      case 'fill':
+        return FillQuestionWidget(
+          key: key,
+          content: content, 
+          onAnswered: _nextQuestion,
+          themeColor: themeColor,
+        );
       case 'image_match':
         return ImageMatchQuestionWidget(
           key: key,

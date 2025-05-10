@@ -13,7 +13,7 @@ class QuestionTypeManager extends StatefulWidget {
   State<QuestionTypeManager> createState() => _QuestionTypeManagerState();
 }
 
-class _QuestionTypeManagerState extends State<QuestionTypeManager> with TickerProviderStateMixin {
+class _QuestionTypeManagerState extends State<QuestionTypeManager> {
   late List<CourseContent> _imageQuestions;
   late List<CourseContent> _audioQuestions;
   int _imageScore = 0;
@@ -21,32 +21,11 @@ class _QuestionTypeManagerState extends State<QuestionTypeManager> with TickerPr
   bool _completedImageQuestions = false;
   bool _completedAudioQuestions = false;
   bool _isTransitioning = false;
-  late AnimationController _fadeController;
-  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _fadeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _fadeController,
-        curve: Curves.easeIn,
-      ),
-    );
-    
-    _fadeController.forward();
     _sortQuestionsByType();
-  }
-
-  @override
-  void dispose() {
-    _fadeController.dispose();
-    super.dispose();
   }
 
   void _sortQuestionsByType() {
@@ -84,12 +63,12 @@ class _QuestionTypeManagerState extends State<QuestionTypeManager> with TickerPr
       _completedImageQuestions = true;
     });
     
-    _fadeController.reverse().then((_) {
+    // Add a small delay to ensure state is updated before rebuilding
+    Future.delayed(const Duration(milliseconds: 100), () {
       if (mounted) {
         setState(() {
           _isTransitioning = false;
         });
-        _fadeController.forward();
       }
     });
   }
@@ -103,29 +82,26 @@ class _QuestionTypeManagerState extends State<QuestionTypeManager> with TickerPr
       _completedAudioQuestions = true;
     });
     
-    _fadeController.reverse().then((_) {
+    // Add a small delay to ensure state is updated before rebuilding
+    Future.delayed(const Duration(milliseconds: 100), () {
       if (mounted) {
         setState(() {
           _isTransitioning = false;
         });
-        _fadeController.forward();
       }
     });
   }
 
   void _restartQuiz() {
-    _fadeController.reverse().then((_) {
-      setState(() {
-        _imageScore = 0;
-        _audioScore = 0;
-        _completedImageQuestions = false;
-        _completedAudioQuestions = false;
-        _isTransitioning = false;
-      });
-      
-      _sortQuestionsByType();
-      _fadeController.forward();
+    setState(() {
+      _imageScore = 0;
+      _audioScore = 0;
+      _completedImageQuestions = false;
+      _completedAudioQuestions = false;
+      _isTransitioning = false;
     });
+    
+    _sortQuestionsByType();
   }
 
   @override
@@ -144,41 +120,32 @@ class _QuestionTypeManagerState extends State<QuestionTypeManager> with TickerPr
       final totalScore = _imageScore + _audioScore;
       final totalQuestions = _imageQuestions.length + _audioQuestions.length;
       
-      return FadeTransition(
-        opacity: _fadeAnimation,
-        child: CompletionScreen(
-          score: totalScore,
-          totalQuestions: totalQuestions,
-          onRestart: _restartQuiz,
-        ),
+      return CompletionScreen(
+        score: totalScore,
+        totalQuestions: totalQuestions,
+        onRestart: _restartQuiz,
       );
     }
     
     // If image questions are not completed and there are image questions
     if (!_completedImageQuestions && _imageQuestions.isNotEmpty) {
-      return FadeTransition(
-        opacity: _fadeAnimation,
-        child: QuestionScreen(
-          contents: _imageQuestions,
-          questionType: 'image_match',
-          onCompleted: _onImageQuestionsCompleted,
-          themeColor: const Color(0xFF4355B9),
-          typeName: 'Image Recognition',
-        ),
+      return QuestionScreen(
+        contents: _imageQuestions,
+        questionType: 'image_match',
+        onCompleted: _onImageQuestionsCompleted,
+        themeColor: Colors.teal,
+        typeName: 'Image Recognition',
       );
     }
     
     // If audio questions are not completed and there are audio questions
     if (!_completedAudioQuestions && _audioQuestions.isNotEmpty) {
-      return FadeTransition(
-        opacity: _fadeAnimation,
-        child: QuestionScreen(
-          contents: _audioQuestions,
-          questionType: 'audio',
-          onCompleted: _onAudioQuestionsCompleted,
-          themeColor: const Color(0xFF6789CA),
-          typeName: 'Listening',
-        ),
+      return QuestionScreen(
+        contents: _audioQuestions,
+        questionType: 'audio',
+        onCompleted: _onAudioQuestionsCompleted,
+        themeColor: Colors.blue,
+        typeName: 'Listening',
       );
     }
     
